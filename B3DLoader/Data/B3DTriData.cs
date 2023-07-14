@@ -6,36 +6,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B3DLoader.Data
+namespace B3DLoader.Data;
+
+public class B3DTriData : B3DBlock
 {
-	public class B3DTriData : B3DBlock
+	public int BrushID { get; set; }
+	public List<int> Indices { get; set; }
+
+	public B3DTriData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
 	{
-		public int BrushID { get; set; }
-		public List<int> Indices { get; set; }
+		Indices = new List<int>();
+	}
 
-		public B3DTriData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
+	public override void ReadBlock()
+	{
+		BrushID = Reader.ReadInt32();
+
+		while ( Chunk.NextChunk() )
 		{
-			Indices = new List<int>();
+			Indices.Add( Reader.ReadInt32() );
+			Indices.Add( Reader.ReadInt32() );
+			Indices.Add( Reader.ReadInt32() );
+
+			// Flip the indices
+			// TODO: can we do better?
+			int tmp = Indices[Indices.Count - 1];
+			Indices[Indices.Count - 1] = Indices[Indices.Count - 2];
+			Indices[Indices.Count - 2] = tmp;
 		}
 
-		public override void ReadBlock()
-		{
-			BrushID = Reader.ReadInt32();
-
-			while ( Chunk.NextChunk() )
-			{
-				Indices.Add( Reader.ReadInt32() );
-				Indices.Add( Reader.ReadInt32() );
-				Indices.Add( Reader.ReadInt32() );
-
-				// Flip the indices
-				// TODO: can we do better?
-				int tmp = Indices[Indices.Count - 1];
-				Indices[Indices.Count - 1] = Indices[Indices.Count - 2];
-				Indices[Indices.Count - 2] = tmp;
-			}
-
-			Log.Info( $"\tFound Tri: {BrushID}" );
-		}
+		Log.Info( $"\tFound Tri: {BrushID}" );
 	}
 }

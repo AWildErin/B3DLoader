@@ -6,49 +6,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B3DLoader.Data
+namespace B3DLoader.Data;
+
+public class B3DMeshData : B3DBlock
 {
-	public class B3DMeshData : B3DBlock
+	public int BrushId { get; set; }
+
+	public List<B3DVertData> Vertices { get; set; }
+	public List<B3DTriData> Triangles { get; set; }
+
+	public B3DMeshData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
 	{
-		public int BrushId { get; set; }
+		Vertices = new List<B3DVertData>();
+		Triangles = new List<B3DTriData>();
+	}
 
-		public List<B3DVertData> Vertices { get; set; }
-		public List<B3DTriData> Triangles { get; set; }
-
-		public B3DMeshData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
+	public override void ReadBlock()
+	{
+		while ( Chunk.NextChunk() )
 		{
-			Vertices = new List<B3DVertData>();
-			Triangles = new List<B3DTriData>();
-		}
+			BrushId = Reader.ReadInt32();
 
-		public override void ReadBlock()
-		{
+			// Read verts and tris
 			while ( Chunk.NextChunk() )
 			{
-				BrushId = Reader.ReadInt32();
+				var chunk = new B3DChunk( Reader, Chunk.Model );
+				chunk.ReadChunk( Chunk );
+				chunk.ProcessChunk();
 
-				// Read verts and tris
-				while ( Chunk.NextChunk() )
+				Log.Info( chunk.Name );
+
+				if ( chunk.Name == "VRTS" )
 				{
-					var chunk = new B3DChunk( Reader, Chunk.Model );
-					chunk.ReadChunk( Chunk );
-					chunk.ProcessChunk();
+					Vertices.Add( chunk.DataBlock as B3DVertData );
 
-					Log.Info( chunk.Name );
-
-					if ( chunk.Name == "VRTS" )
-					{
-						Vertices.Add( chunk.DataBlock as B3DVertData );
-
-					}
-					else if ( chunk.Name == "TRIS" )
-					{
-						Triangles.Add( chunk.DataBlock as B3DTriData );
-					}
 				}
-
-				Log.Info( $"\tFound Mesh: {BrushId}" );
+				else if ( chunk.Name == "TRIS" )
+				{
+					Triangles.Add( chunk.DataBlock as B3DTriData );
+				}
 			}
+
+			Log.Info( $"\tFound Mesh: {BrushId}" );
 		}
 	}
 }

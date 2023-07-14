@@ -1,34 +1,42 @@
 ﻿using System;
 
-namespace B3DLoader
+namespace B3DLoader;
+
+public class Log
 {
-	public class Log
+	public static bool EnableDebug = false;
+
+	public static void Info( object obj )
 	{
-		public static bool EnableDebug = false;
-
-		public static void Info( object obj )
+		if ( !EnableDebug )
 		{
-			if ( !EnableDebug ) return;
-
-			Console.WriteLine( obj );
+			return;
 		}
 
-		public static void Warning( object obj )
-		{
-			if ( !EnableDebug ) return;
+		Console.WriteLine( obj );
+	}
 
-			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine( obj );
-			Console.ResetColor();
+	public static void Warning( object obj )
+	{
+		if ( !EnableDebug )
+		{
+			return;
 		}
 
-		public static void Error( object obj )
-		{
-			if ( !EnableDebug ) return;
+		Console.ForegroundColor = ConsoleColor.Green;
+		Console.WriteLine( obj );
+		Console.ResetColor();
+	}
 
-			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine( obj );
-			Console.ResetColor();
+	public static void Error( object obj )
+	{
+		if ( !EnableDebug )
+		{
+			return;
 		}
+
+		Console.ForegroundColor = ConsoleColor.Red;
+		Console.WriteLine( obj );
+		Console.ResetColor();
 	}
 }
