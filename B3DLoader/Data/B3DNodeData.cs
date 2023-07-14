@@ -35,6 +35,7 @@ public class B3DNodeData : B3DBlock
 		{
 			var sub = new SubData();
 			sub.Name = Reader.ReadNullTerminatedString();
+			Name = sub.Name;
 
 			// These vectors are X Z Y rather than X Y Z
 			float posX = Reader.ReadSingle();
