@@ -1,0 +1,61 @@
+name: lint
+on:
+  pull_request:
+    branches:
+      - master
+
+env:
+  DOTNET_VERSION: '7.0.x'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set git to use CRLF
+      run: |
+        git config --global core.autocrlf true
+
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{env.DOTNET_VERSION}}
+
+    - name: Add dotnet-format problem matcher
+      uses: xt0rted/dotnet-format-problem-matcher@v1.2.0
+
+    - name: Install dotnet format
+      run: dotnet tool update --global dotnet-format
+
+    - name: Run dotnet format
+      run: dotnet format . --verify-no-changes --verbosity diag
+  
+  build:
+    # Make sure we pass linting, no point running as those errors needs to be corrected
+    needs: lint
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{env.DOTNET_VERSION}}
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration ${{matrix.configuration}}
