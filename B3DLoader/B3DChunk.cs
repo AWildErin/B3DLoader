@@ -8,11 +8,28 @@ using System.Threading.Tasks;
 
 namespace B3DLoader;
 
+public enum ChunkTypes
+{
+	UNKNOWN,
+	BB3D,
+	TEXS,
+	BRUS,
+	VRTS,
+	TRIS,
+	MESH,
+	BONE,
+	KEYS,
+	ANIM,
+	NODE
+}
+
 public class B3DChunk
 {
 	public string Name { get; set; }
 	public int Length { get; set; }
 	public int Position { get; set; }
+
+	public ChunkTypes ChunkType { get; set; }
 
 	public B3DChunk Parent { get; set; }
 	public List<B3DChunk> Children { get; set; }
@@ -30,6 +47,8 @@ public class B3DChunk
 
 		Model = model;
 		Reader = br;
+
+		ChunkType = ChunkTypes.UNKNOWN;
 
 		isChunkRead = false;
 	}
@@ -71,32 +90,40 @@ public class B3DChunk
 		switch ( Name )
 		{
 			case "BB3D":
+				ChunkType = ChunkTypes.BB3D;
 				break;
 			case "TEXS":
 				DataBlock = new B3DTexData( Reader, this );
 				Model.Textures.Add( DataBlock as B3DTexData );
+				ChunkType = ChunkTypes.TEXS;
 				break;
 			case "BRUS":
 				DataBlock = new B3DBrushData( Reader, this );
 				Model.Brushes.Add( DataBlock as B3DBrushData );
+				ChunkType = ChunkTypes.BRUS;
 				break;
 			case "NODE":
 				DataBlock = new B3DNodeData( Reader, this );
 				Model.Nodes.Add( DataBlock as B3DNodeData );
+				ChunkType = ChunkTypes.NODE;
 				break;
 			case "MESH":
 				DataBlock = new B3DMeshData( Reader, this );
 				Model.Meshes.Add( DataBlock as B3DMeshData );
+				ChunkType = ChunkTypes.MESH;
 				break;
 			case "VRTS":
 				DataBlock = new B3DVertData( Reader, this );
 				Model.Vertices.Add( DataBlock as B3DVertData );
+				ChunkType = ChunkTypes.VRTS;
 				break;
 			case "TRIS":
 				DataBlock = new B3DTriData( Reader, this );
 				Model.Triangles.Add( DataBlock as B3DTriData );
+				ChunkType = ChunkTypes.TRIS;
 				break;
 			default:
+				Log.Info( $"Unknown chunk type: {Name}" );
 				Reader.BaseStream.Seek( Length, SeekOrigin.Begin );
 				break;
 		}
