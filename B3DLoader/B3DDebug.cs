@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace B3DLoader;
 
@@ -38,5 +39,7 @@ public class Log
 		Console.ForegroundColor = ConsoleColor.Red;
 		Console.WriteLine( obj );
 		Console.ResetColor();
+
+		Debugger.Break();
 	}
 }
