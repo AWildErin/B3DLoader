@@ -1,4 +1,5 @@
-﻿using B3DLoader.Types;
+﻿using B3DLoader.Extensions;
+using B3DLoader.Types;
 using System.Collections.Generic;
 using System.IO;
 
