@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace B3DLoader;
 
+// TODO: Maybe write to a file next to the input?
 public class Log
 {
 	public static bool EnableDebug = false;
@@ -14,7 +15,7 @@ public class Log
 			return;
 		}
 
-		Console.WriteLine( obj );
+		Console.WriteLine( $"[INFO] {obj}" );
 	}
 
 	public static void Warning( object obj )
@@ -25,7 +26,7 @@ public class Log
 		}
 
 		Console.ForegroundColor = ConsoleColor.Green;
-		Console.WriteLine( obj );
+		Console.WriteLine( $"[WARNING] {obj}" );
 		Console.ResetColor();
 	}
 
@@ -37,7 +38,7 @@ public class Log
 		}
 
 		Console.ForegroundColor = ConsoleColor.Red;
-		Console.WriteLine( obj );
+		Console.WriteLine( $"[ERROR] {obj}" );
 		Console.ResetColor();
 
 		Debugger.Break();

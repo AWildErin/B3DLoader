@@ -43,6 +43,12 @@ public class B3DModel
 
 	public bool ReadFromPath( string path )
 	{
+		if ( !File.Exists( path ) )
+		{
+			Log.Error( $"{path} does not exist!" );
+			return false;
+		}
+
 		return ReadFromReader( new BinaryReader( File.OpenRead( path ) ) );
 	}
 
