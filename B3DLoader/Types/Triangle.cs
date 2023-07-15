@@ -8,11 +8,11 @@ namespace B3DLoader.Types;
 
 public class Triangle
 {
-	public float Point1 { get; set; }
-	public float Point2 { get; set; }
-	public float Point3 { get; set; }
+	public int Point1 { get; set; }
+	public int Point2 { get; set; }
+	public int Point3 { get; set; }
 
-	public Triangle( float p1, float p2, float p3 )
+	public Triangle( int p1, int p2, int p3 )
 	{
 		Point1 = p1;
 		Point2 = p2;

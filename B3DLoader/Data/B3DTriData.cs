@@ -1,4 +1,5 @@
-﻿using System;
+﻿using B3DLoader.Types;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,11 +12,11 @@ namespace B3DLoader.Data;
 public class B3DTriData : B3DBlock
 {
 	public int BrushID { get; set; }
-	public List<int> Indices { get; set; }
+	public List<Triangle> Triangles { get; set; }
 
 	public B3DTriData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
 	{
-		Indices = new List<int>();
+		Triangles = new List<Triangle>();
 	}
 
 	public override void ReadBlock()
@@ -24,15 +25,12 @@ public class B3DTriData : B3DBlock
 
 		while ( Chunk.NextChunk() )
 		{
-			Indices.Add( Reader.ReadInt32() );
-			Indices.Add( Reader.ReadInt32() );
-			Indices.Add( Reader.ReadInt32() );
+			int p1 = Reader.ReadInt32();
+			int p2 = Reader.ReadInt32();
+			int p3 = Reader.ReadInt32();
 
 			// Flip the indices
-			// TODO: can we do better?
-			int tmp = Indices[Indices.Count - 1];
-			Indices[Indices.Count - 1] = Indices[Indices.Count - 2];
-			Indices[Indices.Count - 2] = tmp;
+			Triangles.Add( new Triangle( p1, p3, p2 ) );
 		}
 
 		Log.Info( $"\tFound Tri: {BrushID}" );
