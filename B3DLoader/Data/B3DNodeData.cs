@@ -23,11 +23,10 @@ public class B3DNodeData : B3DBlock
 		public Quaternion Rotation { get; set; }
 	}
 
-	public List<SubData> SubNodes { get; set; }
+	public SubData Data { get; set; }
 
 	public B3DNodeData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
 	{
-		SubNodes = new List<SubData>();
 	}
 
 	public override void ReadBlock()
@@ -69,7 +68,7 @@ public class B3DNodeData : B3DBlock
 				subchunk.ProcessChunk();
 			}
 
-			SubNodes.Add( sub );
+			Data = sub;
 		}
 	}
 }
