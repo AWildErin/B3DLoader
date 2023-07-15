@@ -25,12 +25,32 @@ public class B3DVertData : B3DBlock
 		public Vector3 Position { get; set; }
 		public Vector3 Normal { get; set; }
 		public Color Color { get; set; }
-		public float[][] TexCoords { get; set; }
+
+		public Dictionary<int, Vector2> TexCoords { get; set; }
+
+		/// <summary>
+		/// List of advanced tex coords (4 components)
+		/// </summary>
+		/// <see cref="TexCoordSetSize"/>
+		public Dictionary<int, Vector4> AdvancedTexCoords { get; set; }
 	}
 
 	public VertFlags Flags { get; set; }
+
+	/// <summary>
+	/// Texture coords per vertex (eg: 1 for simple U/V) max=8
+	/// </summary>
 	public int TexCoordSets { get; set; }
+
+	/// <summary>
+	/// Components per set (eg: 2 for simple U/V) max=4
+	/// </summary>
 	public int TexCoordSetSize { get; set; }
+
+	/// <summary>
+	/// Specifies whether or not we have more than 2 components per TexCoordSet.
+	/// </summary>
+	public bool HasAdvancedTexCoords { get; set; }
 
 	public List<SubData> Verts { get; set; }
 
@@ -44,6 +64,11 @@ public class B3DVertData : B3DBlock
 		Flags = (VertFlags)Reader.ReadInt32();
 		TexCoordSets = Reader.ReadInt32();
 		TexCoordSetSize = Reader.ReadInt32();
+
+		if ( TexCoordSetSize > 2 )
+		{
+			HasAdvancedTexCoords = true;
+		}
 
 		while ( Chunk.NextChunk() )
 		{
@@ -82,23 +107,27 @@ public class B3DVertData : B3DBlock
 				sub.Color = Color.White;
 			}
 
-			sub.TexCoords = new float[TexCoordSets][];
+			sub.AdvancedTexCoords = new Dictionary<int, Vector4>();
+			sub.TexCoords = new Dictionary<int, Vector2>();
+
 			for ( int i = 0; i < TexCoordSets; i++ )
 			{
-				sub.TexCoords[i] = new float[TexCoordSetSize];
-				for ( int j = 0; j < TexCoordSetSize; j++ )
+				if ( HasAdvancedTexCoords )
 				{
-					sub.TexCoords[i][j] = Reader.ReadSingle();
-				}
-			}
+					float p1 = Reader.ReadSingle();
+					float p2 = Reader.ReadSingle();
+					float p3 = Reader.ReadSingle();
+					float p4 = Reader.ReadSingle();
 
-			// Default our tex coords
-			if ( TexCoordSets == 0 || TexCoordSetSize == 0 )
-			{
-				sub.TexCoords = new float[1][];
-				sub.TexCoords[0] = new float[2];
-				sub.TexCoords[0][0] = 0;
-				sub.TexCoords[0][1] = 0;
+					sub.AdvancedTexCoords.Add( i, new Vector4( p1, p2, p3, p4 ) );
+				}
+				else
+				{
+					float p1 = Reader.ReadSingle();
+					float p2 = Reader.ReadSingle();
+
+					sub.TexCoords.Add( i, new Vector2( p1, p2 ) );
+				}
 			}
 
 			Verts.Add( sub );
