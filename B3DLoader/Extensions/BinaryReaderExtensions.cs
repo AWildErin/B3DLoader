@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace B3DLoader;
+namespace B3DLoader.Extensions;
 
-internal static class BinaryReaderExtensions
+public static class BinaryReaderExtensions
 {
 	public static string ReadNullTerminatedString( this BinaryReader br )
 	{
