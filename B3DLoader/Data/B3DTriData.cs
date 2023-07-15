@@ -11,7 +11,7 @@ namespace B3DLoader.Data;
 
 public class B3DTriData : B3DBlock
 {
-	public int BrushID { get; set; }
+	public int BrushId { get; set; }
 	public List<Triangle> Triangles { get; set; }
 
 	public B3DTriData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
@@ -21,7 +21,7 @@ public class B3DTriData : B3DBlock
 
 	public override void ReadBlock()
 	{
-		BrushID = Reader.ReadInt32();
+		BrushId = Reader.ReadInt32();
 
 		while ( Chunk.NextChunk() )
 		{
@@ -33,6 +33,6 @@ public class B3DTriData : B3DBlock
 			Triangles.Add( new Triangle( p1, p3, p2 ) );
 		}
 
-		Log.Info( $"\tFound Tri: {BrushID}" );
+		Log.Info( $"\tFound Tri: {BrushId}" );
 	}
 }
