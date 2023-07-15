@@ -16,4 +16,9 @@ public class Vector2
 		X = x;
 		Y = y;
 	}
+
+	public static implicit operator System.Numerics.Vector2( Vector2 i )
+	{
+		return new System.Numerics.Vector2( i.X, i.Y );
+	}
 }

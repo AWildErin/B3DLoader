@@ -20,4 +20,14 @@ public class Quaternion
 		Z = z;
 		W = w;
 	}
+
+	public static implicit operator System.Numerics.Quaternion( Quaternion i )
+	{
+		return new System.Numerics.Quaternion( i.X, i.Y, i.Z, i.W );
+	}
+
+	public static implicit operator System.Numerics.Vector4( Quaternion i )
+	{
+		return new System.Numerics.Vector4( i.X, i.Y, i.Z, i.W );
+	}
 }

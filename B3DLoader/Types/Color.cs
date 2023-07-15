@@ -23,4 +23,9 @@ public class Color
 
 	public static readonly Color Black = new Color( 0, 0, 0, 1 );
 	public static readonly Color White = new Color( 1, 1, 1, 1 );
+
+	public override string ToString()
+	{
+		return $"R = {R}, G = {G}, B = {B}, A = {A}";
+	}
 }
