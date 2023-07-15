@@ -12,12 +12,11 @@ public class B3DMeshData : B3DBlock
 {
 	public int BrushId { get; set; }
 
-	public List<B3DVertData> Vertices { get; set; }
+	public B3DVertData Vertices { get; set; }
 	public List<B3DTriData> Triangles { get; set; }
 
 	public B3DMeshData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
 	{
-		Vertices = new List<B3DVertData>();
 		Triangles = new List<B3DTriData>();
 	}
 
@@ -38,7 +37,7 @@ public class B3DMeshData : B3DBlock
 
 				if ( chunk.Name == "VRTS" )
 				{
-					Vertices.Add( chunk.DataBlock as B3DVertData );
+					Vertices = chunk.DataBlock as B3DVertData;
 
 				}
 				else if ( chunk.Name == "TRIS" )
