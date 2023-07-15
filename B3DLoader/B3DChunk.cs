@@ -94,16 +94,21 @@ public class B3DChunk
 				break;
 			case "TEXS":
 				DataBlock = new B3DTexData( Reader, this );
-				Model.Textures.Add( DataBlock as B3DTexData );
+				Model.Textures = DataBlock as B3DTexData;
 				ChunkType = ChunkTypes.TEXS;
 				break;
 			case "BRUS":
 				DataBlock = new B3DBrushData( Reader, this );
-				Model.Brushes.Add( DataBlock as B3DBrushData );
+				Model.Brushes = DataBlock as B3DBrushData;
 				ChunkType = ChunkTypes.BRUS;
 				break;
 			case "NODE":
 				DataBlock = new B3DNodeData( Reader, this );
+				if (Model.RootNode == null)
+				{
+					Model.RootNode = DataBlock as B3DNodeData;
+				}
+
 				Model.Nodes.Add( DataBlock as B3DNodeData );
 				ChunkType = ChunkTypes.NODE;
 				break;

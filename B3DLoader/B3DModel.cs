@@ -12,8 +12,11 @@ public class B3DModel
 	/* Blocks */
 
 	public List<B3DMeshData> Meshes { get; private set; }
-	public List<B3DBrushData> Brushes { get; private set; }
-	public List<B3DTexData> Textures { get; private set; }
+
+	public B3DBrushData Brushes { get; set; }
+	public B3DTexData Textures { get; set; }
+
+	public B3DNodeData RootNode { get; set; }
 	public List<B3DNodeData> Nodes { get; private set; }
 
 	/* Mesh Data */
@@ -27,8 +30,6 @@ public class B3DModel
 		reader = null;
 
 		Meshes = new List<B3DMeshData>();
-		Brushes = new List<B3DBrushData>();
-		Textures = new List<B3DTexData>();
 		Nodes = new List<B3DNodeData>();
 
 		Vertices = new List<B3DVertData>();
