@@ -129,7 +129,7 @@ public class B3DChunk
 				break;
 			default:
 				Log.Info( $"Unknown chunk type: {Name}" );
-				Reader.BaseStream.Seek( Length, SeekOrigin.Begin );
+				Reader.BaseStream.Seek( Position + Length, SeekOrigin.Begin );
 				break;
 		}
 
