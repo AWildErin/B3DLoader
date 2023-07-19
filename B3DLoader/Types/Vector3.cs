@@ -22,7 +22,16 @@ public class Vector3
 	public static readonly Vector3 Zero = new Vector3( 0, 0, 0 );
 	public static readonly Vector3 One = new Vector3( 1, 1, 1 );
 
-	public static implicit operator System.Numerics.Vector3(Vector3 i)
+	public static Vector3 operator -( Vector3 left, Vector3 right )
+	{
+		return new Vector3(
+			left.X - right.X,
+			left.Y - right.Y,
+			left.Z - right.Z
+		);
+	}
+
+	public static implicit operator System.Numerics.Vector3( Vector3 i )
 	{
 		return new System.Numerics.Vector3( i.X, i.Y, i.Z );
 	}
