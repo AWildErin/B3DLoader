@@ -127,6 +127,10 @@ public class B3DChunk
 				Model.Triangles.Add( DataBlock as B3DTriData );
 				ChunkType = ChunkTypes.TRIS;
 				break;
+			case "ANIM":
+				DataBlock = new B3DAnimData( Reader, this );
+				ChunkType = ChunkTypes.ANIM;
+				break;
 			default:
 				Log.Info( $"Unknown chunk type: {Name}" );
 				Reader.BaseStream.Seek( Position + Length, SeekOrigin.Begin );
