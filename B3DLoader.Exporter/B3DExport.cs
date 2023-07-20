@@ -55,7 +55,7 @@ public class B3DExport
 		}
 
 		var rootNode = model.RootChunk.Children.Where( x => x.ChunkType == ChunkTypes.NODE ).First();
-		var node = addNode( rootNode );
+		var node = createNode( rootNode );
 
 		// Rotate node so we're the correct orientation
 		// TODO: Factor in original rotation?
@@ -67,7 +67,7 @@ public class B3DExport
 		gltfMdl.SaveGLTF( outPath );
 	}
 
-	private NodeBuilder? addNode( B3DChunk nodeChunk )
+	private NodeBuilder? createNode( B3DChunk nodeChunk )
 	{
 		if ( nodeChunk == null )
 		{
@@ -99,14 +99,14 @@ public class B3DExport
 		var childNodes = nodeChunk.Children.Where( x => x.ChunkType == ChunkTypes.NODE ).ToList();
 		foreach ( var child in childNodes )
 		{
-			nb.AddNode( addNode( child ) );
+			nb.AddNode( createNode( child ) );
 		}
 
 		// Nodes may only have either 1 node *OR* bone.
 		var mdl = nodeChunk.Children.Where( x => x.ChunkType == ChunkTypes.MESH ).FirstOrDefault();
 		if ( mdl != null )
 		{
-			var mesh = addMesh( mdl );
+			var mesh = createMesh( mdl );
 			nb.Name = mesh.Name;
 
 			scene.AddRigidMesh( mesh, nb );
@@ -116,7 +116,7 @@ public class B3DExport
 	}
 	
 	// TODO: handle multiple materials on 1 mesh, dunno how we'll do this
-	private MESH addMesh( B3DChunk mesh )
+	private MESH createMesh( B3DChunk mesh )
 	{
 		MESH mb = new MESH();
 
