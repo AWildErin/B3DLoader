@@ -131,6 +131,10 @@ public class B3DChunk
 				DataBlock = new B3DAnimData( Reader, this );
 				ChunkType = ChunkTypes.ANIM;
 				break;
+			case "KEYS":
+				DataBlock = new B3DKeysData( Reader, this );
+				ChunkType = ChunkTypes.KEYS;
+				break;
 			default:
 				Log.Info( $"Unknown chunk type: {Name}" );
 				Reader.BaseStream.Seek( Position + Length, SeekOrigin.Begin );
