@@ -25,7 +25,22 @@ public class B3DModel
 
 	private BinaryReader reader;
 
-	public B3DModel()
+	/* Unknown Chunks */
+	public List<UnknownChunk> UnknownChunks { get; private set; }
+
+	/// <summary>
+	/// Sets whether or not to report unknown chunks and list them once the model is fully loaded.
+	/// </summary>
+	public bool ReportUnknownChunks { get; private set; }
+
+	public struct UnknownChunk
+	{
+		public string name;
+		public int offset;
+	}
+
+
+	public B3DModel( bool reportUnkChunks = false )
 	{
 		reader = null;
 
@@ -34,6 +49,9 @@ public class B3DModel
 
 		Vertices = new List<B3DVertData>();
 		Triangles = new List<B3DTriData>();
+
+		ReportUnknownChunks = reportUnkChunks;
+		UnknownChunks = new List<UnknownChunk>();
 	}
 
 	public bool ReadFromReader( BinaryReader br )
@@ -68,6 +86,15 @@ public class B3DModel
 
 		// Process the main chunk
 		RootChunk.ProcessChunk();
+
+		// Report all unknown chunks and their offsets
+		if ( ReportUnknownChunks )
+		{
+			foreach ( var chunk in UnknownChunks )
+			{
+				Log.Info( $"Encountered unknown chunk \"{chunk.name}\" at offset: {chunk.offset}" );
+			}
+		}
 
 		return true;
 	}

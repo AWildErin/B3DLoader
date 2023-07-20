@@ -6,7 +6,10 @@ internal class Program
 	{
 		string filePath = args[0];
 
-		var mdl = new B3DModel();
+		// Enable logging in our application so we can show info about the B3D
+		Log.EnableDebug = true;
+
+		var mdl = new B3DModel( true );
 		var result = mdl.ReadFromPath( filePath );
 
 		if ( !result )

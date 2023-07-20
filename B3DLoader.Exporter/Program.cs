@@ -13,7 +13,7 @@ internal class Program
 	{
 		string filePath = args[0];
 
-		var mdl = new B3DModel();
+		var mdl = new B3DModel( true );
 		var result = mdl.ReadFromPath( filePath );
 
 		// Enable Logging after we've read the model

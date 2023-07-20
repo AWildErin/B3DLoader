@@ -104,7 +104,7 @@ public class B3DChunk
 				break;
 			case "NODE":
 				DataBlock = new B3DNodeData( Reader, this );
-				if (Model.RootNode == null)
+				if ( Model.RootNode == null )
 				{
 					Model.RootNode = DataBlock as B3DNodeData;
 				}
@@ -137,6 +137,12 @@ public class B3DChunk
 				break;
 			default:
 				Log.Info( $"Unknown chunk type: {Name}" );
+
+				if ( Model.ReportUnknownChunks )
+				{
+					Model.UnknownChunks.Add( new B3DModel.UnknownChunk { name = Name, offset = Position } );
+				}
+
 				Reader.BaseStream.Seek( Position + Length, SeekOrigin.Begin );
 				break;
 		}
