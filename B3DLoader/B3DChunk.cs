@@ -135,6 +135,10 @@ public class B3DChunk
 				DataBlock = new B3DKeysData( Reader, this );
 				ChunkType = ChunkTypes.KEYS;
 				break;
+			case "BONE":
+				DataBlock = new B3DBoneData( Reader, this );
+				ChunkType = ChunkTypes.BONE;
+				break;
 			default:
 				Log.Info( $"Unknown chunk type: {Name}" );
 
