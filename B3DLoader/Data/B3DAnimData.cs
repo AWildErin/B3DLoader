@@ -11,15 +11,9 @@ namespace B3DLoader.Data;
 
 public class B3DAnimData : B3DBlock
 {
-	public class SubData
-	{
-		public int Flags { get; set; }
-		public int Frames { get; set; }
-		public float FPS { get; set; }
-
-	}
-
-	public SubData Data { get; set; }
+	public int Flags { get; set; }
+	public int Frames { get; set; }
+	public float FPS { get; set; }
 
 	public B3DAnimData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
 	{
@@ -30,10 +24,9 @@ public class B3DAnimData : B3DBlock
 	{
 		while ( Chunk.TillNextChunk() )
 		{
-			var sub = new SubData();
-			sub.Flags = Reader.ReadInt32();
-			sub.Frames = Reader.ReadInt32();
-			sub.FPS = Reader.ReadSingle();
+			Flags = Reader.ReadInt32();
+			Frames = Reader.ReadInt32();
+			FPS = Reader.ReadSingle();
 
 			Log.Info( $"\tFound Anim" );
 		}
