@@ -37,7 +37,7 @@ public class B3DBrushData : B3DBlock
 		// Read the number of textures for this brush
 		TextureCount = Reader.ReadInt32();
 
-		while ( Chunk.NextChunk() )
+		while ( Chunk.TillNextChunk() )
 		{
 			var sub = new SubData();
 			sub.Name = Reader.ReadNullTerminatedString();

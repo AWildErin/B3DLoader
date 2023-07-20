@@ -37,7 +37,7 @@ public class B3DNodeData : B3DBlock
 
 	public override void ReadBlock()
 	{
-		while ( Chunk.NextChunk() )
+		while ( Chunk.TillNextChunk() )
 		{
 			var sub = new SubData();
 			sub.Name = Reader.ReadNullTerminatedString();
@@ -67,7 +67,7 @@ public class B3DNodeData : B3DBlock
 			Log.Info( $"\tFound Node: {sub.Name}" );
 
 			// Read child chunks
-			while ( Chunk.NextChunk() )
+			while ( Chunk.TillNextChunk() )
 			{
 				var subchunk = new B3DChunk( Reader, Chunk.Model );
 				subchunk.ReadChunk( Chunk );

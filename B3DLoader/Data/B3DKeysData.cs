@@ -44,7 +44,7 @@ public class B3DKeysData : B3DBlock
 	{
 		Flags = (KeysFlags)Reader.ReadInt32();
 
-		while ( Chunk.NextChunk() )
+		while ( Chunk.TillNextChunk() )
 		{
 			var sub = new SubData();
 

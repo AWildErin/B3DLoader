@@ -70,7 +70,7 @@ public class B3DVertData : B3DBlock
 			HasAdvancedTexCoords = true;
 		}
 
-		while ( Chunk.NextChunk() )
+		while ( Chunk.TillNextChunk() )
 		{
 			var sub = new SubData();
 

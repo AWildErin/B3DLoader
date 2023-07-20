@@ -23,7 +23,7 @@ public class B3DTriData : B3DBlock
 	{
 		BrushId = Reader.ReadInt32();
 
-		while ( Chunk.NextChunk() )
+		while ( Chunk.TillNextChunk() )
 		{
 			int p1 = Reader.ReadInt32();
 			int p2 = Reader.ReadInt32();

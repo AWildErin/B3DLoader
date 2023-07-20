@@ -26,7 +26,7 @@ public class B3DBoneData : B3DBlock
 
 	public override void ReadBlock()
 	{
-		while ( Chunk.NextChunk() )
+		while ( Chunk.TillNextChunk() )
 		{
 			var sub = new SubData();
 

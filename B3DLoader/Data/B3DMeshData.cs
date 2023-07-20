@@ -22,18 +22,16 @@ public class B3DMeshData : B3DBlock
 
 	public override void ReadBlock()
 	{
-		while ( Chunk.NextChunk() )
+		while ( Chunk.TillNextChunk() )
 		{
 			BrushId = Reader.ReadInt32();
 
 			// Read verts and tris
-			while ( Chunk.NextChunk() )
+			while ( Chunk.TillNextChunk() )
 			{
 				var chunk = new B3DChunk( Reader, Chunk.Model );
 				chunk.ReadChunk( Chunk );
 				chunk.ProcessChunk();
-
-				Log.Info( chunk.Name );
 
 				if ( chunk.Name == "VRTS" )
 				{

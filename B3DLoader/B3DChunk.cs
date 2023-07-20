@@ -53,7 +53,7 @@ public class B3DChunk
 		isChunkRead = false;
 	}
 
-	public bool NextChunk()
+	public bool TillNextChunk()
 	{
 		return Reader.BaseStream.Position < Length + Position;
 	}
@@ -157,7 +157,7 @@ public class B3DChunk
 		}
 
 		// Then read our children
-		while ( NextChunk() )
+		while ( TillNextChunk() )
 		{
 			var child = new B3DChunk( Reader, Model );
 			child.ReadChunk( this );

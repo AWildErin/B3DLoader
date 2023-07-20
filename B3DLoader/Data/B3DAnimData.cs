@@ -28,15 +28,16 @@ public class B3DAnimData : B3DBlock
 
 	public override void ReadBlock()
 	{
-		while ( Chunk.NextChunk() )
+		while ( Chunk.TillNextChunk() )
 		{
 			var sub = new SubData();
 			sub.Flags = Reader.ReadInt32();
 			sub.Frames = Reader.ReadInt32();
 			sub.FPS = Reader.ReadSingle();
 
-
 			Log.Info( $"\tFound Anim" );
 		}
+
+		// We cheat here and process the next block as it'll always be a SEQS block, 
 	}
 }

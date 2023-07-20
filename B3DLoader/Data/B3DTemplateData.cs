@@ -25,7 +25,7 @@ public class B3DTemplateData : B3DBlock
 
 	public override void ReadBlock()
 	{
-		while ( Chunk.NextChunk() )
+		while ( Chunk.TillNextChunk() )
 		{
 			var sub = new SubData();
 			sub.Name = Reader.ReadNullTerminatedString();
