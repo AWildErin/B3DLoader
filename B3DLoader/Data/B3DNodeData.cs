@@ -25,8 +25,14 @@ public class B3DNodeData : B3DBlock
 
 	public SubData Data { get; set; }
 
+	public List<B3DKeysData> Keys { get; set; }
+
+	public B3DBoneData Bone { get; set; }
+	public B3DMeshData Mesh { get; set; }
+
 	public B3DNodeData( BinaryReader Reader, B3DChunk chunk ) : base( Reader, chunk )
 	{
+		Keys = new List<B3DKeysData>();
 	}
 
 	public override void ReadBlock()
@@ -66,6 +72,29 @@ public class B3DNodeData : B3DBlock
 				var subchunk = new B3DChunk( Reader, Chunk.Model );
 				subchunk.ReadChunk( Chunk );
 				subchunk.ProcessChunk();
+
+				switch ( subchunk.ChunkType )
+				{
+					case ChunkTypes.BONE:
+						if ( Bone != null )
+						{
+							Log.Error( $"Node {Name} already has bone!" );
+						}
+						Bone = subchunk.DataBlock as B3DBoneData;
+						break;
+					case ChunkTypes.MESH:
+						if ( Mesh != null )
+						{
+							Log.Error( $"Node {Name} already has a mesh!" );
+
+						}
+						Mesh = subchunk.DataBlock as B3DMeshData;
+						break;
+					case ChunkTypes.KEYS:
+						Keys.Add( subchunk.DataBlock as B3DKeysData );
+						break;
+					default: break;
+				}
 			}
 
 			Data = sub;

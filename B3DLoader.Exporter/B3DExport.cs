@@ -103,7 +103,7 @@ public class B3DExport
 		}
 
 		// Nodes may only have either 1 node *OR* bone.
-		var mdl = nodeChunk.Children.Where( x => x.ChunkType == ChunkTypes.MESH ).FirstOrDefault();
+		var mdl = dataBlock.Mesh;
 		if ( mdl != null )
 		{
 			var mesh = createMesh( mdl );
@@ -115,17 +115,11 @@ public class B3DExport
 		return nb;
 	}
 	
-	// TODO: handle multiple materials on 1 mesh, dunno how we'll do this
-	private MESH createMesh( B3DChunk mesh )
+	// TODO: handle multiple materials, I think the Triangles list has
+	// one entry for each material, but GLTF doesn't support multiple mats on 1 mesh, so we'll need to split it.
+	private MESH createMesh( B3DMeshData meshBlock )
 	{
 		MESH mb = new MESH();
-
-		var meshBlock = mesh.DataBlock as B3DMeshData;
-		if ( meshBlock == null )
-		{
-			Log.Error( "Mesh block was equal to null!" );
-			return mb;
-		}
 
 		var triBlock = meshBlock.Triangles[0];
 		var brush = model.Brushes.BrushData[triBlock.BrushId];
