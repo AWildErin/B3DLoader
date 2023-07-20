@@ -92,7 +92,7 @@ public class B3DModel
 		{
 			foreach ( var chunk in UnknownChunks )
 			{
-				Log.Info( $"Encountered unknown chunk \"{chunk.name}\" at offset: {chunk.offset}" );
+				Log.Warning( $"Encountered unknown chunk \"{chunk.name}\" at offset: {chunk.offset}" );
 			}
 		}
 
